@@ -1,0 +1,62 @@
+meta {
+  name: Drawings to PDF
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/forms/libreoffice/convert/office
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  Accept: application/pdf
+}
+
+body:multipart-form {
+  files[]: @file(./samples/sample.odg)
+  landscape: false
+  nativePageRanges: 1-2
+  exportFormFields: true
+  allowDuplicateFieldNames: false
+  exportBookmarks: true
+  exportBookmarksToPdfDestination: false
+  exportPlaceholders: false
+  exportNotes: false
+  exportNotesPages: false
+  exportOnlyNotesPages: false
+  exportNotesInMargin: false
+  convertOooTargetToPdfTarget: false
+  exportLinksRelativeFsys: false
+  exportHiddenSlides: false
+  skipEmptyPages: false
+  addOriginalDocumentAsStream: false
+  singlePageSheets: false
+  pdfa: PDF/A-1b
+  pdfua: false
+  merge: false
+  metadata: {"Author": "Gotenberg", "Subject": "Drawings to PDF conversion"}
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:3000
+}
+
+assert {
+  res.status: eq 200
+  res.headers["content-type"]: contains application/pdf
+}
+
+docs {
+  # Drawings to PDF
+
+  Convert a LibreOffice Draw file (`.odg`, `.fodg`) to PDF using the LibreOffice route.
+
+  ## Notes
+
+  - Supported formats: `.odg`, `.fodg`, `.vsd`, `.vsdx`
+  - Use `nativePageRanges` to select specific pages (e.g., `1-2`, `3`)
+  - Set `pdfa` to a valid PDF/A standard (e.g., `PDF/A-1b`, `PDF/A-2b`) for archival output
+  - Set `merge: true` if uploading multiple files and want a single merged PDF output
+}
