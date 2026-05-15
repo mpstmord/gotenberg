@@ -1,0 +1,50 @@
+meta {
+  name: Convert PDF to PDF/A
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/forms/pdfengines/convert
+  body: multipartForm
+  auth: none
+}
+
+params:query {
+  ~pdfa: PDF/A-1b
+  ~pdfua: false
+}
+
+headers {
+  ~Accept: application/pdf
+}
+
+body:multipart-form {
+  files[]: @file(../../../assets/sample.pdf)
+  pdfa: PDF/A-1b
+  pdfua: false
+}
+
+docs {
+  ## Convert PDF to PDF/A
+
+  Converts one or more PDF files to the PDF/A format using the Gotenberg PDF engines.
+
+  ### Form Fields
+
+  | Field   | Type    | Description                                                                 |
+  |---------|---------|-----------------------------------------------------------------------------|
+  | files[] | file    | One or more PDF files to convert.                                           |
+  | pdfa    | string  | The PDF/A format to convert to. Options: PDF/A-1b, PDF/A-2b, PDF/A-3b.     |
+  | pdfua   | boolean | Whether to enable PDF/UA (Universal Accessibility) compliance.              |
+
+  ### Response
+
+  Returns the converted PDF file as a binary stream with `Content-Type: application/pdf`.
+
+  ### Notes
+
+  - PDF/A is an ISO-standardized version of PDF for long-term archiving.
+  - PDF/A-1b is the most widely supported format.
+  - PDF/UA adds accessibility requirements on top of PDF/A.
+}
