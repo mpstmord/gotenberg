@@ -1,0 +1,58 @@
+meta {
+  name: Presentation to PDF
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/forms/libreoffice/convert/office
+  body: multipartForm
+  auth: none
+}
+
+params:query {
+
+}
+
+headers {
+
+}
+
+body:multipart-form {
+  files[]: @file(./sample.pptx)
+  landscape: false
+  nativePageRanges: 1-3
+  exportFormFields: true
+  allowDuplicateFieldNames: false
+  exportBookmarks: true
+  exportBookmarksToPdfDestination: false
+  exportPlaceholders: false
+  exportNotes: false
+  exportNotesPages: false
+  exportOnlyNotesPages: false
+  exportNotesInMargin: false
+  convertOooTargetToPdfTarget: false
+  exportLinksRelativeFsys: false
+  exportHiddenSlides: false
+  skipEmptyPages: false
+  addOriginalDocumentAsStream: false
+  pdfUA: false
+}
+
+docs {
+  ## Presentation to PDF
+
+  Converts a presentation file (e.g., .pptx, .odp, .ppt) to PDF using LibreOffice.
+
+  ### Supported formats
+  - `.pptx` — Microsoft PowerPoint (Open XML)
+  - `.ppt` — Microsoft PowerPoint (legacy)
+  - `.odp` — OpenDocument Presentation
+  - `.key` — Apple Keynote (limited support)
+
+  ### Notes
+  - Use `nativePageRanges` to limit which slides are exported (e.g., `1-5`).
+  - Set `landscape: true` if your slides are in landscape orientation and you want to preserve layout.
+  - `exportNotes: true` will include speaker notes in the PDF output.
+  - `exportHiddenSlides: true` includes slides marked as hidden in the presentation.
+}
