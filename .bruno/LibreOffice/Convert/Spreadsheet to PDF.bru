@@ -1,0 +1,78 @@
+meta {
+  name: Spreadsheet to PDF
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/forms/libreoffice/convert
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  Accept: application/pdf
+}
+
+body:multipart-form {
+  files[]: @file(./samples/spreadsheet.xlsx)
+  landscape: false
+  nativePageRanges: 1-2
+  exportFormFields: true
+  allowDuplicateFieldNames: false
+  exportBookmarks: true
+  exportBookmarksToPdfDestination: false
+  exportPlaceholders: false
+  exportNotes: false
+  exportNotesPages: false
+  exportOnlyNotesPages: false
+  exportNotesInMargin: false
+  convertOooTargetToPdfTarget: false
+  exportLinksRelativeFsys: false
+  exportHiddenSlides: false
+  skipEmptyPages: false
+  addOriginalDocumentAsStream: false
+  singlePageSheets: false
+  mergePdfs: false
+  pdfa: PDF/A-1b
+  pdfua: false
+  metadata: {
+    Author: John Doe,
+    Subject: Sample Spreadsheet
+  }
+}
+
+vars:pre-request {
+  baseUrl: http://localhost:3000
+}
+
+assert {
+  res.status: eq 200
+  res.headers['content-type']: contains application/pdf
+}
+
+docs {
+  # Spreadsheet to PDF
+
+  Convert a spreadsheet file (e.g., `.xlsx`, `.ods`, `.csv`) to PDF using LibreOffice.
+
+  ## Form Fields
+
+  | Field | Type | Description |
+  |-------|------|-------------|
+  | `files[]` | file | One or more spreadsheet files to convert |
+  | `landscape` | bool | Set paper orientation to landscape |
+  | `nativePageRanges` | string | Page ranges to print (e.g., `1-5`) |
+  | `singlePageSheets` | bool | Render each sheet as a single page |
+  | `skipEmptyPages` | bool | Skip empty pages in the output |
+  | `mergePdfs` | bool | Merge all converted PDFs into one |
+  | `pdfa` | string | PDF/A format (e.g., `PDF/A-1b`) |
+  | `pdfua` | bool | Enable PDF/UA (Universal Accessibility) |
+
+  ## Supported Formats
+
+  - `.xlsx`, `.xls` — Microsoft Excel
+  - `.ods` — OpenDocument Spreadsheet
+  - `.csv` — Comma-Separated Values
+  - `.tsv` — Tab-Separated Values
+}
