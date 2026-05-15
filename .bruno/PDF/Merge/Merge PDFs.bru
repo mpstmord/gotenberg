@@ -1,0 +1,47 @@
+meta {
+  name: Merge PDFs
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/forms/pdfengines/merge
+  body: multipart
+  auth: none
+}
+
+params:query {
+  ~pdfa: PDF/A-1a
+  ~pdfua: true
+  ~metadata: {"Author": "John Doe", "Subject": "Merged Document"}
+}
+
+body:multipart {
+  files[]: @file(./sample1.pdf)
+  files[]: @file(./sample2.pdf)
+  files[]: @file(./sample3.pdf)
+  ~pdfa: PDF/A-1a
+  ~pdfua: true
+  ~metadata: {"Author": "John Doe", "Subject": "Merged Document"}
+}
+
+docs {
+  # Merge PDFs
+
+  Merges multiple PDF files into a single PDF document using the PDF engines available in Gotenberg.
+
+  ## Form Fields
+
+  | Field      | Type   | Required | Description                                      |
+  |------------|--------|----------|--------------------------------------------------|
+  | files[]    | File   | Yes      | Two or more PDF files to merge                   |
+  | pdfa       | String | No       | Convert the resulting PDF to the given PDF/A format (e.g., PDF/A-1a, PDF/A-2b, PDF/A-3b) |
+  | pdfua      | Bool   | No       | Enable PDF/UA (Universal Accessibility) standard |
+  | metadata   | JSON   | No       | Write metadata to the resulting PDF              |
+
+  ## Notes
+
+  - Files are merged in the order they are provided.
+  - At least two PDF files must be supplied.
+  - The resulting file is returned as `application/pdf`.
+}
