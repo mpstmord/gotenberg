@@ -1,0 +1,55 @@
+meta {
+  name: HTML to PDF (LibreOffice)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/forms/libreoffice/convert
+  body: multipartForm
+  auth: none
+}
+
+headers {
+  Accept: application/pdf
+}
+
+body:multipart-form {
+  files[]: @file(../../../test-assets/sample.html)
+  landscape: false
+  nativePageRanges: 1-2
+  exportFormFields: true
+  allowDuplicateFieldNames: false
+  exportBookmarks: true
+  exportBookmarksToPdfDestination: false
+  exportPlaceholders: false
+  exportNotes: false
+  exportNotesPages: false
+  exportOnlyNotesPages: false
+  exportNotesInMargin: false
+  convertOooTargetToPdfTarget: false
+  exportLinksRelativeFsys: false
+  exportHiddenSlides: false
+  skipEmptyPages: false
+  addOriginalDocumentAsStream: false
+  losslessImageCompression: false
+  quality: 90
+  reduceImageResolution: false
+  maxImageResolution: 300
+  pdfVersion: PDF/A-1b
+  pdfa: false
+  pdfua: false
+  merge: false
+  metadata: {"Author": "Gotenberg", "Subject": "HTML to PDF via LibreOffice"}
+  waitTimeout: 30
+}
+
+docs {
+  Convert an HTML file to PDF using LibreOffice.
+
+  LibreOffice can process HTML files and convert them to PDF,
+  which may produce different results compared to the Chromium-based
+  conversion route.
+
+  Reference: https://gotenberg.dev/docs/routes#convert-with-libreoffice
+}
